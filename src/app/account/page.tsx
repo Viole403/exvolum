@@ -1,19 +1,61 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
+import { Navbar } from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { User, Package, Heart, MapPin, CreditCard, Settings, LogOut } from 'lucide-react';
 
 export default function Account() {
-  const [user] = useState({
-    name: 'John Doe',
-    email: 'john@example.com',
-    joinDate: '2024-01-15',
-    totalOrders: 12,
-    totalSpent: 485.99
-  });
+  const { user, loading, signOut } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/login');
+    }
+  }, [user, loading, router]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/');
+  };
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <div className="max-w-7xl mx-auto py-16 px-6">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded mb-4 w-1/4"></div>
+            <div className="grid md:grid-cols-4 gap-8">
+              <div className="h-64 bg-gray-200 rounded"></div>
+              <div className="md:col-span-3 h-64 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect to login if not authenticated
+  if (!user) {
+    return null;
+  }
+
+  const getUserDisplayName = () => {
+    if (user?.user_metadata?.first_name && user?.user_metadata?.last_name) {
+      return `${user.user_metadata.first_name} ${user.user_metadata.last_name}`;
+    }
+    if (user?.user_metadata?.first_name) {
+      return user.user_metadata.first_name;
+    }
+    return user?.email?.split('@')[0] || 'User';
+  };
 
   const recentOrders = [
     {
@@ -42,28 +84,7 @@ export default function Account() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
-        <Link href="/" className="text-2xl font-bold text-gray-900">
-          Exvolum
-        </Link>
-        <div className="hidden md:flex items-center space-x-8">
-          <Link href="/shop" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Shop
-          </Link>
-          <Link href="/articles" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Articles
-          </Link>
-          <Link href="/about" className="text-gray-600 hover:text-gray-900 transition-colors">
-            About
-          </Link>
-          <Link href="/contact" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Contact
-          </Link>
-          <Button variant="default" className="bg-black hover:bg-gray-800 text-white">
-            Account
-          </Button>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid lg:grid-cols-4 gap-8">
@@ -75,7 +96,7 @@ export default function Account() {
                   <div className="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
                     <User className="h-10 w-10 text-gray-600" />
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900">{user.name}</h2>
+                  <h2 className="text-xl font-semibold text-gray-900">{getUserDisplayName()}</h2>
                   <p className="text-gray-600">{user.email}</p>
                 </div>
 
@@ -104,7 +125,10 @@ export default function Account() {
                     <Settings className="h-5 w-5" />
                     <span>Account Settings</span>
                   </Link>
-                  <button className="flex items-center space-x-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg w-full text-left">
+                  <button
+                    onClick={handleSignOut}
+                    className="flex items-center space-x-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg w-full text-left"
+                  >
                     <LogOut className="h-5 w-5" />
                     <span>Sign Out</span>
                   </button>
@@ -117,7 +141,7 @@ export default function Account() {
           <div className="lg:col-span-3 space-y-8">
             {/* Welcome Section */}
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {user.name.split(' ')[0]}!</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {getUserDisplayName().split(' ')[0]}!</h1>
               <p className="text-gray-600">Manage your account and track your orders</p>
             </div>
 
@@ -126,21 +150,21 @@ export default function Account() {
               <Card>
                 <CardContent className="p-6 text-center">
                   <Package className="h-8 w-8 text-blue-600 mx-auto mb-3" />
-                  <h3 className="text-2xl font-bold text-gray-900">{user.totalOrders}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">0</h3>
                   <p className="text-gray-600">Total Orders</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-6 text-center">
                   <CreditCard className="h-8 w-8 text-green-600 mx-auto mb-3" />
-                  <h3 className="text-2xl font-bold text-gray-900">${user.totalSpent}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">$0.00</h3>
                   <p className="text-gray-600">Total Spent</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-6 text-center">
                   <Heart className="h-8 w-8 text-red-600 mx-auto mb-3" />
-                  <h3 className="text-2xl font-bold text-gray-900">8</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">0</h3>
                   <p className="text-gray-600">Wishlist Items</p>
                 </CardContent>
               </Card>
@@ -166,8 +190,8 @@ export default function Account() {
                       <div className="text-right">
                         <p className="font-semibold text-gray-900">${order.total}</p>
                         <span className={`text-sm px-2 py-1 rounded-full ${
-                          order.status === 'Delivered' 
-                            ? 'bg-green-100 text-green-800' 
+                          order.status === 'Delivered'
+                            ? 'bg-green-100 text-green-800'
                             : 'bg-blue-100 text-blue-800'
                         }`}>
                           {order.status}
