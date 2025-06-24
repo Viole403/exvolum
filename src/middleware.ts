@@ -1,10 +1,9 @@
-import { type NextRequest } from 'next/server'
-import { updateSession } from '@/utils/supabase/middleware'
+import { auth } from '@/lib/auth'
 
-export async function middleware(request: NextRequest) {
-  // update user's auth session
-  return await updateSession(request)
-}
+export default auth((req) => {
+  // Add any custom middleware logic here if needed
+  // For now, NextAuth will handle authentication automatically
+})
 
 export const config = {
   matcher: [
@@ -13,8 +12,8 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
+     * - api/auth (NextAuth.js API routes)
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api/auth|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }

@@ -1,23 +1,33 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
-import { createClient } from '@/utils/supabase/client';
+import React, { createContext, useContext } from 'react';
+import { useSession, signIn as nextAuthSignIn, signOut as nextAuthSignOut } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 interface AuthContextType {
-  user: User | null;
+  session: Session | null;
+  user: Session['user'] | null;
   loading: boolean;
   signOut: () => Promise<void>;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string, metadata?: any) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error?: string }>;
+  signUp: (email: string, password: string, firstName?: string, lastName?: string) => Promise<{ error?: string }>;
+  register: (email: string, password: string, firstName?: string, lastName?: string) => Promise<{ error?: string }>;
+  signInWithCredentials: (email: string, password: string) => Promise<{ error?: string }>;
+  signInWithGoogle: () => Promise<void>;
+  signInWithApple: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
+  session: null,
   user: null,
   loading: true,
   signOut: async () => {},
-  signIn: async () => ({ error: null }),
-  signUp: async () => ({ error: null }),
+  signIn: async () => ({}),
+  signUp: async () => ({}),
+  register: async () => ({}),
+  signInWithCredentials: async () => ({}),
+  signInWithGoogle: async () => {},
+  signInWithApple: async () => {},
 });
 
 export const useAuth = () => {
@@ -28,96 +38,97 @@ export const useAuth = () => {
   return context;
 };
 
-// Function to sync user with database
-const syncUserWithDatabase = async (user: User) => {
-  try {
-    const response = await fetch('/api/auth/sync-user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: user.id,
-        email: user.email,
-        firstName: user.user_metadata?.first_name,
-        lastName: user.user_metadata?.last_name,
-        avatarUrl: user.user_metadata?.avatar_url,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error('Failed to sync user with database');
-    }
-  } catch (error) {
-    console.error('Error syncing user with database:', error);
-  }
-};
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const supabase = createClient();
-
-  useEffect(() => {
-    // Get initial session
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      setLoading(false);
-
-      // Sync user with database if authenticated
-      if (user) {
-        await syncUserWithDatabase(user);
-      }
-    };
-
-    getUser();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-
-      // Sync user with database on sign in
-      if (event === 'SIGNED_IN' && session?.user) {
-        await syncUserWithDatabase(session.user);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [supabase.auth]);
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    await nextAuthSignOut();
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { error };
+    try {
+      const result = await nextAuthSignIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        return { error: 'Invalid credentials' };
+      }
+
+      return {};
+    } catch (error) {
+      return { error: 'An error occurred during sign in' };
+    }
   };
 
-  const signUp = async (email: string, password: string, metadata?: any) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata,
-      },
-    });
-    return { error };
+  const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
+    try {
+      // Check if user already exists
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          firstName,
+          lastName,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { error: data.error || 'Registration failed' };
+      }
+
+      // Automatically sign in after successful registration
+      return signIn(email, password);
+    } catch (error) {
+      return { error: 'An error occurred during registration' };
+    }
+  };  const signInWithGoogle = async () => {
+    try {
+      await nextAuthSignIn('google', {
+        callbackUrl: '/',
+        redirect: true
+      });
+    } catch (error) {
+      console.error('Google sign in error:', error);
+    }
   };
 
+  const signInWithApple = async () => {
+    try {
+      await nextAuthSignIn('apple', {
+        callbackUrl: '/',
+        redirect: true
+      });
+    } catch (error) {
+      console.error('Apple sign in error:', error);
+    }
+  };
+
+  // Alias methods for consistency with auth pages
+  const register = signUp;
+  const signInWithCredentials = signIn;
   return (
     <AuthContext.Provider
       value={{
-        user,
+        session,
+        user: session?.user || null,
         loading,
         signOut,
         signIn,
         signUp,
+        register,
+        signInWithCredentials,
+        signInWithGoogle,
+        signInWithApple,
       }}
     >
       {children}

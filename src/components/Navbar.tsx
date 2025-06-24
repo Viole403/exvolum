@@ -25,8 +25,12 @@ export function Navbar() {
   };
 
   const getUserInitials = () => {
-    if (user?.user_metadata?.first_name && user?.user_metadata?.last_name) {
-      return `${user.user_metadata.first_name[0]}${user.user_metadata.last_name[0]}`;
+    if (user?.name) {
+      const names = user.name.split(' ');
+      if (names.length >= 2) {
+        return `${names[0][0]}${names[1][0]}`.toUpperCase();
+      }
+      return names[0][0].toUpperCase();
     }
     if (user?.email) {
       return user.email[0].toUpperCase();
@@ -35,11 +39,8 @@ export function Navbar() {
   };
 
   const getUserDisplayName = () => {
-    if (user?.user_metadata?.first_name && user?.user_metadata?.last_name) {
-      return `${user.user_metadata.first_name} ${user.user_metadata.last_name}`;
-    }
-    if (user?.user_metadata?.first_name) {
-      return user.user_metadata.first_name;
+    if (user?.name) {
+      return user.name;
     }
     return user?.email?.split('@')[0] || 'User';
   };
@@ -75,9 +76,7 @@ export function Navbar() {
           >
             0
           </Badge>
-        </Link>
-
-        {/* Authentication */}
+        </Link>        {/* Authentication */}
         {loading ? (
           <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
         ) : user ? (
@@ -85,7 +84,7 @@ export function Navbar() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user.user_metadata?.avatar_url} alt={getUserDisplayName()} />
+                  <AvatarImage src={user.image || ''} alt={getUserDisplayName()} />
                   <AvatarFallback>{getUserInitials()}</AvatarFallback>
                 </Avatar>
               </Button>
@@ -168,12 +167,11 @@ export function Navbar() {
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
                 <div className="h-4 bg-gray-200 rounded w-24 animate-pulse" />
-              </div>
-            ) : user ? (
+              </div>            ) : user ? (
               <div className="space-y-2 pt-4 border-t border-gray-100">
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={user.user_metadata?.avatar_url} alt={getUserDisplayName()} />
+                    <AvatarImage src={user.image || ''} alt={getUserDisplayName()} />
                     <AvatarFallback>{getUserInitials()}</AvatarFallback>
                   </Avatar>
                   <div>
