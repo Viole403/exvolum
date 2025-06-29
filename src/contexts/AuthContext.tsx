@@ -6,7 +6,7 @@ import { Session } from 'next-auth';
 
 interface AuthContextType {
   session: Session | null;
-  user: Session['user'] | null;
+  user: Session['user'] & { role?: string } | null;
   loading: boolean;
   signOut: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<{ error?: string }>;

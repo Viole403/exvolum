@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
         firstName,
         lastName,
         name: firstName && lastName ? `${firstName} ${lastName}` : firstName || null,
+        image: `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName || "")}%20${encodeURIComponent(lastName || "")}`,
       }
     });
 

@@ -1,8 +1,36 @@
-import { auth } from '@/lib/auth'
+import { auth } from '@/lib/auth';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import type { Session } from 'next-auth';
+
+const adminRoutes = ['/dashboard'];
 
 export default auth((req) => {
-  // Add any custom middleware logic here if needed
-  // For now, NextAuth will handle authentication automatically
+  const request = req as NextRequest & { auth: Session | null };
+  const { pathname } = request.nextUrl;
+  const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
+
+  // If it's not an admin route, continue
+  if (!isAdminRoute) {
+    return NextResponse.next();
+  }
+
+  const session = request.auth;
+  const isAdmin = (session?.user as any)?.role === 'ADMIN';
+
+  // Redirect to login if not authenticated
+  if (!session) {
+    const loginUrl = new URL('/auth/login', request.url);
+    loginUrl.searchParams.set('callbackUrl', encodeURI(pathname));
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Redirect to home if not admin
+  if (!isAdmin) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  return NextResponse.next();
 })
 
 export const config = {
@@ -14,6 +42,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - api/auth (NextAuth.js API routes)
      */
-    '/((?!_next/static|_next/image|favicon.ico|api/auth|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api/auth|auth/.*|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
