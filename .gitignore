@@ -39,3 +39,5 @@ next-env.d.ts
 .turbo
 
 /src/generated/prisma
+
+.vscode/*
