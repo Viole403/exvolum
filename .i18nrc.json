@@ -1,0 +1,20 @@
+{
+  "localesPaths": ["src/messages"],
+  "pathMatcher": "{locale}.json",
+  "keystyle": "nested",
+  "enabledFrameworks": ["react", "next-intl"],
+  "sourceLanguage": "en",
+  "displayLanguage": "en",
+  "ignoredLocales": [],
+  "includedLanguages": ["en", "id"],
+  "namespace": false,
+  "enabledParsers": ["json"],
+  "dirStructure": "file",
+  "extract": {
+    "autoDetect": true,
+    "keygenStyle": "camelCase"
+  },
+  "usage": {
+    "scanningIgnore": ["node_modules", ".next", "dist", "build"]
+  }
+}
