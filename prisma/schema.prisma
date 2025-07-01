@@ -434,15 +434,20 @@ model PaymentMethod {
 }
 
 model TeamMember {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  role        String
-  image       String
-  description String
-  socialLinks Json     // e.g., { linkedin: string, twitter: string, github: string, website: string }
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  role          String
+  image         String
+  description   String
+  socialLinks   Json?    // e.g., { linkedin: string, twitter: string, github: string, website: string }
+  skills        String[] // e.g., ["JavaScript", "React", "Node.js"]
+  education     Json?    // e.g., [{ degree: "B.Sc. Computer Science", institution: "University XYZ", year: 2018 }]
+  experience    Json?    // e.g., [{ title: "Software Engineer", company: "ABC Corp", duration: "2018-2022", description: "Developed web applications." }]
+  contactEmail  String?
+  contactPhone  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 enum AddressType {

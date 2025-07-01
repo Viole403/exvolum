@@ -125,7 +125,18 @@ async function main() {
         twitter: 'https://twitter.com/sarahjohnson',
         github: null,
         website: null
-      }
+      },
+      skills: ['Leadership', 'Strategy', 'Marketing', 'Product Development'],
+      education: [
+        { degree: 'MBA', institution: 'Harvard Business School', year: 2015 },
+        { degree: 'B.Sc. Business Administration', institution: 'University of California, Berkeley', year: 2013 }
+      ],
+      experience: [
+        { title: 'CEO', company: 'Exvolum', duration: '2020-Present', description: 'Led company growth and strategic initiatives.' },
+        { title: 'Head of Marketing', company: 'Innovate Co.', duration: '2015-2020', description: 'Developed and executed marketing campaigns.' }
+      ],
+      contactEmail: 'sarah.johnson@exvolum.com',
+      contactPhone: '+1-555-123-4567'
     },
     {
       name: 'Michael Chen',
@@ -138,7 +149,18 @@ async function main() {
         twitter: null,
         github: 'https://github.com/michaelchen',
         website: null
-      }
+      },
+      skills: ['Product Management', 'UI/UX Design', 'Market Research', 'Agile Methodologies'],
+      education: [
+        { degree: 'M.Sc. Human-Computer Interaction', institution: 'Stanford University', year: 2017 },
+        { degree: 'B.A. Industrial Design', institution: 'Rhode Island School of Design', year: 2015 }
+      ],
+      experience: [
+        { title: 'Head of Product', company: 'Exvolum', duration: '2021-Present', description: 'Oversaw product lifecycle from conception to launch.' },
+        { title: 'Senior Product Designer', company: 'DesignWorks', duration: '2017-2021', description: 'Designed user-centered products and experiences.' }
+      ],
+      contactEmail: 'michael.chen@exvolum.com',
+      contactPhone: '+1-555-987-6543'
     },
     {
       name: 'Emily Rodriguez',
@@ -151,7 +173,17 @@ async function main() {
         twitter: 'https://twitter.com/emilyrodriguez',
         github: null,
         website: 'https://emilyrodriguez.com'
-      }
+      },
+      skills: ['Customer Support', 'Communication', 'Problem Solving', 'CRM Software'],
+      education: [
+        { degree: 'B.A. Communications', institution: 'University of Washington', year: 2016 }
+      ],
+      experience: [
+        { title: 'Customer Success Manager', company: 'Exvolum', duration: '2020-Present', description: 'Managed customer relationships and resolved issues.' },
+        { title: 'Support Specialist', company: 'ServicePro', duration: '2016-2020', description: 'Provided technical support to clients.' }
+      ],
+      contactEmail: 'emily.rodriguez@exvolum.com',
+      contactPhone: '+1-555-234-5678'
     },
     {
       name: 'Ava Patel',
@@ -164,7 +196,18 @@ async function main() {
         twitter: null,
         github: null,
         website: null
-      }
+      },
+      skills: ['Logistics', 'Supply Chain Management', 'Process Optimization', 'Team Coordination'],
+      education: [
+        { degree: 'M.Sc. Operations Management', institution: 'MIT Sloan', year: 2018 },
+        { degree: 'B.Sc. Industrial Engineering', institution: 'Georgia Tech', year: 2016 }
+      ],
+      experience: [
+        { title: 'Operations Manager', company: 'Exvolum', duration: '2022-Present', description: 'Managed daily operations and improved efficiency.' },
+        { title: 'Logistics Coordinator', company: 'Global Freight', duration: '2018-2022', description: 'Coordinated international shipments and inventory.' }
+      ],
+      contactEmail: 'ava.patel@exvolum.com',
+      contactPhone: '+1-555-345-6789'
     },
     {
       name: 'Liam Smith',
@@ -177,7 +220,18 @@ async function main() {
         twitter: 'https://twitter.com/liamsmith',
         github: 'https://github.com/liamsmith',
         website: null
-      }
+      },
+      skills: ['Full-stack Development', 'Cloud Architecture', 'Database Design', 'DevOps'],
+      education: [
+        { degree: 'M.Sc. Computer Science', institution: 'Carnegie Mellon University', year: 2017 },
+        { degree: 'B.Sc. Software Engineering', institution: 'University of Waterloo', year: 2015 }
+      ],
+      experience: [
+        { title: 'Lead Engineer', company: 'Exvolum', duration: '2021-Present', description: 'Led development of core platform features.' },
+        { title: 'Senior Software Engineer', company: 'Tech Solutions', duration: '2017-2021', description: 'Designed and implemented scalable software systems.' }
+      ],
+      contactEmail: 'liam.smith@exvolum.com',
+      contactPhone: '+1-555-456-7890'
     },
     {
       name: 'Olivia Lee',
@@ -190,7 +244,17 @@ async function main() {
         twitter: null,
         github: null,
         website: 'https://olivialee.com'
-      }
+      },
+      skills: ['Digital Marketing', 'Content Strategy', 'SEO/SEM', 'Brand Management'],
+      education: [
+        { degree: 'B.A. Marketing', institution: 'New York University', year: 2014 }
+      ],
+      experience: [
+        { title: 'Marketing Director', company: 'Exvolum', duration: '2020-Present', description: 'Developed and executed comprehensive marketing strategies.' },
+        { title: 'Marketing Specialist', company: 'Brand Builders', duration: '2014-2020', description: 'Managed social media campaigns and content creation.' }
+      ],
+      contactEmail: 'olivia.lee@exvolum.com',
+      contactPhone: '+1-555-567-8901'
     },
     {
       name: 'Noah Kim',
@@ -203,7 +267,17 @@ async function main() {
         twitter: 'https://twitter.com/noahkim',
         github: null,
         website: null
-      }
+      },
+      skills: ['User Research', 'Wireframing', 'Prototyping', 'Usability Testing'],
+      education: [
+        { degree: 'B.F.A. Graphic Design', institution: 'Parsons School of Design', year: 2015 }
+      ],
+      experience: [
+        { title: 'UX Designer', company: 'Exvolum', duration: '2019-Present', description: 'Designed intuitive and engaging user interfaces.' },
+        { title: 'Junior Designer', company: 'Creative Agency', duration: '2015-2019', description: 'Assisted in various design projects.' }
+      ],
+      contactEmail: 'noah.kim@exvolum.com',
+      contactPhone: '+1-555-678-9012'
     },
     {
       name: 'Sophia Müller',
@@ -216,13 +290,35 @@ async function main() {
         twitter: null,
         github: null,
         website: null
-      }
+      },
+      skills: ['Content Creation', 'Storytelling', 'SEO Writing', 'Editing'],
+      education: [
+        { degree: 'M.A. Journalism', institution: 'Columbia University', year: 2016 },
+        { degree: 'B.A. English Literature', institution: 'University of Cambridge', year: 2014 }
+      ],
+      experience: [
+        { title: 'Content Strategist', company: 'Exvolum', duration: '2020-Present', description: 'Developed and implemented content strategies.' },
+        { title: 'Journalist', company: 'Daily News', duration: '2016-2020', description: 'Wrote articles and conducted interviews.' }
+      ],
+      contactEmail: 'sophia.muller@exvolum.com',
+      contactPhone: '+1-555-789-0123'
     }
   ];
   for (const member of teamMembers) {
     await prisma.teamMember.upsert({
       where: { slug: member.slug },
-      update: {},
+      update: {
+        name: member.name,
+        role: member.role,
+        image: member.image,
+        description: member.description,
+        socialLinks: member.socialLinks,
+        skills: member.skills,
+        education: member.education,
+        experience: member.experience,
+        contactEmail: member.contactEmail,
+        contactPhone: member.contactPhone,
+      },
       create: {
         name: member.name,
         slug: member.slug,
@@ -230,6 +326,11 @@ async function main() {
         image: member.image,
         description: member.description,
         socialLinks: member.socialLinks,
+        skills: member.skills,
+        education: member.education,
+        experience: member.experience,
+        contactEmail: member.contactEmail,
+        contactPhone: member.contactPhone,
       },
     });
   }
