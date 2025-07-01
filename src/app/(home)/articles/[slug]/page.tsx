@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { Section } from '@/components';
 import Link from 'next/link';
 

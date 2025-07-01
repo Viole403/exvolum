@@ -21,7 +21,6 @@ import {
   Minus
 } from 'lucide-react';
 
-
 import { PageLayout } from '@/components';
 
 interface ProductDetailPageProps {
@@ -405,3 +404,5 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         )}
       </div>
     </PageLayout>
+  );
+}

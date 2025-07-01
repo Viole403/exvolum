@@ -190,59 +190,79 @@ export default function EditArticlePage() {
               <FormField
                 control={control}
                 name="title"
-                label="Title"
                 render={({ field }) => (
-                  <Input
-                    {...field}
-                    placeholder="Enter article title"
-                    onChange={(e) => {
-                      field.onChange(e);
-                      handleTitleChange(e);
-                    }}
-                  />
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Enter article title"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          handleTitleChange(e);
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
 
               <FormField
                 control={control}
                 name="slug"
-                label="Slug"
                 render={({ field }) => (
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground">
-                      /blog/
-                    </div>
-                    <Input
-                      className="pl-16"
-                      {...field}
-                    />
-                  </div>
+                  <FormItem>
+                    <FormLabel>Slug</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground">
+                          /blog/
+                        </div>
+                        <Input
+                          className="pl-16"
+                          {...field}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
 
               <FormField
                 control={control}
                 name="excerpt"
-                label="Excerpt"
                 render={({ field }) => (
-                  <Textarea
-                    {...field}
-                    placeholder="A short excerpt that summarizes the article"
-                    className="min-h-[100px]"
-                  />
+                  <FormItem>
+                    <FormLabel>Excerpt</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="A short excerpt that summarizes the article"
+                        className="min-h-[100px]"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
 
               <FormField
                 control={control}
                 name="content"
-                label="Content"
                 render={({ field }) => (
-                  <Textarea
-                    {...field}
-                    placeholder="Write your article content here..."
-                    className="min-h-[300px] font-mono text-sm"
-                  />
+                  <FormItem>
+                    <FormLabel>Content</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Write your article content here..."
+                        className="min-h-[300px] font-mono text-sm"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
             </div>
@@ -252,25 +272,24 @@ export default function EditArticlePage() {
                 <h3 className="font-medium">Publish</h3>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <FormLabel>Status</FormLabel>
                     <FormField
                       control={control}
                       name="published"
-                      label=""
                       render={({ field }) => (
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="published"
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                          <label
-                            htmlFor="published"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Published
-                          </label>
-                        </div>
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>Published</FormLabel>
+                            <FormDescription>
+                              Published articles will be visible to all users.
+                            </FormDescription>
+                          </div>
+                        </FormItem>
                       )}
                     />
                   </div>
@@ -315,17 +334,22 @@ export default function EditArticlePage() {
                 <FormField
                   control={control}
                   name="tags"
-                  label="Tags"
                   render={({ field }) => (
-                    <Input
-                      placeholder="tag1, tag2, tag3"
-                      {...field}
-                    />
+                    <FormItem>
+                      <FormLabel>Tags</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="tag1, tag2, tag3"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Separate tags with commas
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
-                <p className="text-sm text-muted-foreground">
-                  Separate tags with commas
-                </p>
               </div>
 
               <div className="rounded-lg border border-red-200 bg-red-50 p-4">

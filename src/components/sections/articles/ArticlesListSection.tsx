@@ -144,9 +144,9 @@ export default function ArticlesListSection({
       {totalPages > 1 && (
         <Pagination>
           <PaginationContent>
-            <PaginationPrevious onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} />
+            <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} />
             {renderPaginationItems()}
-            <PaginationNext onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))} />
+            <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} />
           </PaginationContent>
         </Pagination>
       )}
