@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  PageLayout,
   Section,
   ContactSection,
   ContactHeroSection,
@@ -11,7 +10,7 @@ import {
 
 export default function Contact() {
   return (
-    <PageLayout>
+    <>
       {/* Hero Section */}
       <Section background="white" className="pt-12 pb-8">
         <ContactSection>
@@ -32,6 +31,6 @@ export default function Contact() {
           <ContactFormSection />
         </ContactSection>
       </Section>
-    </PageLayout>
+    </>
   );
 }

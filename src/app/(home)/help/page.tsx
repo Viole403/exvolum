@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  PageLayout,
   Section,
   HelpSection,
   FAQSection,
@@ -64,13 +63,13 @@ const faqCategories = [
 
 export default function Help() {
   return (
-    <PageLayout>
+    <>
       <Section background="white" className="py-16">
         <HelpSection>
           <FAQSection categories={faqCategories} />
           <ContactSupportSection />
         </HelpSection>
       </Section>
-    </PageLayout>
+    </>
   );
 }

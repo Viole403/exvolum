@@ -1,17 +1,15 @@
 "use client";
 
 import {
-  PageLayout,
   Section,
   HeroSection,
   FeaturesSection,
   FeaturedProductsSection,
-  NewsletterSection,
 } from "@/components";
 
 export default function Home() {
   return (
-    <PageLayout>
+    <>
       {/* Hero Section */}
       <Section background="white" className="pt-24 pb-16">
         <HeroSection />
@@ -26,6 +24,6 @@ export default function Home() {
       <Section background="white" className="py-16">
         <FeaturedProductsSection />
       </Section>
-    </PageLayout>
+    </>
   );
 }

@@ -20,7 +20,9 @@ import {
   Plus,
   Minus
 } from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
+
+
+import { PageLayout } from '@/components';
 
 interface ProductDetailPageProps {
   params: Promise<{
@@ -108,9 +110,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-
+    <PageLayout>
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Breadcrumb */}
         <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-8">
@@ -404,6 +404,4 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           </section>
         )}
       </div>
-    </div>
-  );
-}
+    </PageLayout>

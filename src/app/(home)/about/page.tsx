@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  PageLayout,
   Section,
   AboutSection,
   AboutHeroSection,
@@ -12,7 +11,7 @@ import {
 
 export default function About() {
   return (
-    <PageLayout>
+    <>
       {/* Hero Section */}
       <Section background="white" className="pt-24 pb-16">
         <AboutSection>
@@ -40,6 +39,6 @@ export default function About() {
           <AboutTeamSection />
         </AboutSection>
       </Section>
-    </PageLayout>
+    </>
   );
 }

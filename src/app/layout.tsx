@@ -9,6 +9,7 @@ import { LocaleProvider } from '@/contexts/LocaleContext';
 import { Toaster } from 'sonner';
 
 import './globals.css';
+import { Footer, Navbar } from '@/components';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -53,7 +54,14 @@ export default async function RootLayout({
             <AuthProvider>
               <LocaleProvider>
                 <NextIntlClientProvider messages={messages}>
-                  {children}
+                  {/* {children} */}
+                  <div className="min-h-screen flex flex-col">
+                        <Navbar />
+                        <main className="flex-1 pt-16">
+                          {children}
+                        </main>
+                        <Footer />
+                      </div>
                   <Toaster position="top-right" richColors />
                 </NextIntlClientProvider>
               </LocaleProvider>

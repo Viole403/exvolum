@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  PageLayout,
   Section,
   ReturnsSection,
   ReturnsPolicySection,
@@ -10,7 +9,7 @@ import {
 
 export default function Returns() {
   return (
-    <PageLayout>
+    <>
       <Section background="white" className="py-16">        <ReturnsSection
           showBackButton={true}
           backButtonText="Back to Help Center"
@@ -23,6 +22,6 @@ export default function Returns() {
       <Section background="gray">
         <ReturnsProcessSection />
       </Section>
-    </PageLayout>
+    </>
   );
 }

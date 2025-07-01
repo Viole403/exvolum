@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { Navbar } from '@/components/Navbar';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { User, Package, Heart, MapPin, CreditCard, Settings, LogOut } from 'lucide-react';
@@ -51,7 +51,7 @@ export default function Account() {
   if (loading || statsLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+  
         <div className="max-w-7xl mx-auto py-16 px-6">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded mb-4 w-1/4"></div>
@@ -79,7 +79,7 @@ export default function Account() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <Navbar />
+
 
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid lg:grid-cols-4 gap-8 py-12">
@@ -190,37 +190,7 @@ export default function Account() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-6 mt-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-2xl font-bold mb-4">Exvolum</h3>
-              <p className="text-gray-300">Premium products for modern living</p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Account</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><Link href="/account" className="hover:text-white">My Account</Link></li>
-                <li><Link href="/account/orders" className="hover:text-white">Order History</Link></li>
-                <li><Link href="/account/wishlist" className="hover:text-white">Wishlist</Link></li>
-                <li><Link href="/account/settings" className="hover:text-white">Profile Settings</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><Link href="/help" className="hover:text-white">Help Center</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Contact Us</Link></li>
-                <li><Link href="/returns" className="hover:text-white">Returns</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Exvolum. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      
     </div>
   );
 }

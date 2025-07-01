@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
@@ -30,18 +32,18 @@ export function AboutTeamSection() {
         ))}
         {!loading && teamMembers && teamMembers.map((member, index) => (
           <Link key={index} href={`/about/${member.slug}`} className="block">
-            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow cursor-pointer h-full">
-              <CardContent className="p-6 text-center">
-                <div className="relative mb-6">
+            <Card className="border border-gray-200 shadow-none hover:shadow-md transition-shadow cursor-pointer h-full rounded-lg overflow-hidden">
+              <CardContent className="p-4 text-center flex flex-col items-center">
+                <div className="relative mb-4 w-28 h-28 rounded-full overflow-hidden border-2 border-gray-100 bg-gray-50 flex items-center justify-center">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-blue-600 font-medium mb-3">{member.role}</p>
-                <p className="text-gray-600 text-sm">{member.description}</p>
+                <h3 className="text-lg font-semibold text-gray-800 mb-1">{member.name}</h3>
+                <p className="text-sm text-blue-600 font-medium mb-2">{member.role}</p>
+                <p className="text-gray-600 text-xs line-clamp-3">{member.description}</p>
               </CardContent>
             </Card>
           </Link>

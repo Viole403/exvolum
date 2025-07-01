@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { Navbar } from '@/components/Navbar';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -112,7 +112,7 @@ export default function AccountSettings() {
   if (loading || !user) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+        
         <div className="max-w-7xl mx-auto py-16 px-6">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded mb-4 w-1/4"></div>
@@ -128,7 +128,7 @@ export default function AccountSettings() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
+      
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid lg:grid-cols-4 gap-8 py-12">
           {/* Sidebar */}

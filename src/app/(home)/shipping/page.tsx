@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  PageLayout,
   Section,
   ShippingSection,
   ShippingInfoSection
@@ -9,7 +8,7 @@ import {
 
 export default function Shipping() {
   return (
-    <PageLayout>
+    <>
       <Section background="white" className="py-16">
         <ShippingSection
           showBackButton={true}
@@ -19,6 +18,6 @@ export default function Shipping() {
           <ShippingInfoSection />
         </ShippingSection>
       </Section>
-    </PageLayout>
+    </>
   );
 }
