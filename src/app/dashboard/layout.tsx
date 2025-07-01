@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { Navbar } from '@/components/dashboard/navbar';
 
+
 export default async function DashboardLayout({
   children,
 }: {

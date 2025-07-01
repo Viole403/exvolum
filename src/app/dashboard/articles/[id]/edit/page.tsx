@@ -126,34 +126,7 @@ export default function EditArticlePage() {
     setValue('slug', slug, { shouldValidate: true });
   };
 
-  // Custom FormField component with proper typing
-  const FormField = <TFieldValues extends FieldValues = FormValues>({
-    name,
-    label,
-    control,
-    render,
-  }: {
-    name: FieldPath<TFieldValues>;
-    label: string;
-    control: Control<TFieldValues>;
-    render: (field: any) => React.ReactNode;
-  }) => (
-    <Controller
-      name={name}
-      control={control}
-      render={({ field, fieldState }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            {render(field)}
-          </FormControl>
-          {fieldState.error && (
-            <FormMessage>{fieldState.error.message}</FormMessage>
-          )}
-        </FormItem>
-      )}
-    />
-  );
+  
 
   const onSubmit = handleSubmit(async (values: FormValues) => {
     try {

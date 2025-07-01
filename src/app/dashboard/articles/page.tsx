@@ -1,9 +1,12 @@
+'use client';
+
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 
 type Article = {
   id: string;
@@ -22,7 +25,8 @@ type Article = {
 
 async function getArticles() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/dashboard/articles`, {
+    // Use relative URL for API calls from the client
+    const response = await fetch('/api/dashboard/articles', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -41,25 +45,77 @@ async function getArticles() {
   }
 }
 
-export default async function ArticlesPage() {
-  const session = await auth();
-  let articles: Article[] = [];
-  let error: string | null = null;
+export default function ArticlesPage() {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!session?.user) {
-    redirect('/auth/login');
-  }
+  useEffect(() => {
+    async function loadArticles() {
+      try {
+        setLoading(true);
+        const fetchedArticles = await getArticles();
+        setArticles(fetchedArticles);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching articles:', err);
+        setError('Failed to load articles. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  // This is a fallback, middleware should handle this
-  if ((session.user as any)?.role !== 'ADMIN') {
-    redirect('/');
-  }
+    loadArticles();
+  }, []);
 
-  try {
-    articles = await getArticles();
-  } catch (err) {
-    console.error('Error fetching articles:', err);
-    error = 'Failed to load articles. Please try again.';
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
+  const handleDeleteArticle = async (articleId: string) => {
+    if (!confirm('Are you sure you want to delete this article? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/dashboard/articles/${articleId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete article');
+      }
+
+      // Remove the article from the local state
+      setArticles(articles.filter(article => article.id !== articleId));
+    } catch (error) {
+      console.error('Error deleting article:', error);
+      alert('Failed to delete article. Please try again.');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Articles</h1>
+            <p className="text-muted-foreground">
+              Manage your blog articles
+            </p>
+          </div>
+          <Button asChild>
+            <Link href="/dashboard/articles/new">
+              <Icons.plus className="mr-2 h-4 w-4" />
+              New Article
+            </Link>
+          </Button>
+        </div>
+        <div className="flex justify-center py-12">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -94,7 +150,7 @@ export default async function ArticlesPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => window.location.reload()}
+                  onClick={handleRefresh}
                 >
                   <Icons.refreshCw className="mr-2 h-4 w-4" />
                   Try again
@@ -154,10 +210,10 @@ export default async function ArticlesPage() {
                           {article.published ? (
                             <Icons.checkCircle className="h-4 w-4 text-green-500" />
                           ) : (
-                            <Icons.draft className="h-4 w-4 text-yellow-500" />
+                            <Icons.plusCircle className="h-4 w-4 text-yellow-500" />
                           )}
                         </span>
-                        <Link 
+                        <Link
                           href={`/dashboard/articles/${article.id}/edit`}
                           className="hover:underline"
                         >
@@ -206,39 +262,14 @@ export default async function ArticlesPage() {
                             <Icons.edit className="h-4 w-4" />
                           </Link>
                         </Button>
-                        <form
-                          action={`/api/dashboard/articles/${article.id}`}
-                          method="POST"
-                          onSubmit={async (e) => {
-                            e.preventDefault();
-                            if (confirm('Are you sure you want to delete this article? This action cannot be undone.')) {
-                              try {
-                                const response = await fetch(`/api/dashboard/articles/${article.id}`, {
-                                  method: 'DELETE',
-                                });
-                                
-                                if (!response.ok) {
-                                  throw new Error('Failed to delete article');
-                                }
-                                
-                                // Refresh the page to show updated list
-                                window.location.reload();
-                              } catch (error) {
-                                console.error('Error deleting article:', error);
-                                alert('Failed to delete article. Please try again.');
-                              }
-                            }
-                          }}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-red-600 hover:bg-red-50"
+                          onClick={() => handleDeleteArticle(article.id)}
                         >
-                          <Button 
-                            type="submit"
-                            variant="outline" 
-                            size="sm" 
-                            className="text-red-600 hover:bg-red-50"
-                          >
-                            <Icons.trash2 className="h-4 w-4" />
-                          </Button>
-                        </form>
+                          <Icons.trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
                     </td>
                   </tr>

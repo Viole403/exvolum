@@ -12,6 +12,7 @@ import {
   Form,
   FormControl,
   FormDescription,
+  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -40,40 +41,12 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 // Custom form field component with proper TypeScript types
-function FormField<TFieldValues extends FieldValues = FormValues>({
-  name,
-  label,
-  control,
-  render,
-}: {
-  name: FieldPath<TFieldValues>;
-  label: string;
-  control: Control<TFieldValues>;
-  render: (field: any) => React.ReactNode;
-}) {
-  return (
-    <Controller
-      name={name}
-      control={control}
-      render={({ field, fieldState }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            {render(field)}
-          </FormControl>
-          {fieldState.error && (
-            <FormMessage>{fieldState.error.message}</FormMessage>
-          )}
-        </FormItem>
-      )}
-    />
-  );
-}
+
 
 export default function NewArticlePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
-  
+
   // Initialize form with default values and validation
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema) as any,
@@ -86,9 +59,9 @@ export default function NewArticlePage() {
       tags: '',
     },
   });
-  
+
   const { control, handleSubmit, setValue, formState } = form;
-  
+
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const title = e.target.value;
     const slug = title
@@ -97,18 +70,18 @@ export default function NewArticlePage() {
       .replace(/(^-|-$)/g, '');
     setValue('slug', slug, { shouldValidate: true });
   };
-  
+
   // Handle form submission
   const onSubmit = async (values: FormValues) => {
     try {
       setIsLoading(true);
-      
+
       // In a real app, you would call your API endpoint here
       console.log('Creating article:', values);
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Show success message and redirect
       toast.success('Article created successfully');
       router.push('/dashboard/articles');
@@ -119,7 +92,7 @@ export default function NewArticlePage() {
       setIsLoading(false);
     }
   };
-  
+
   // Wrap the submit handler with react-hook-form's handleSubmit
   const handleFormSubmit = handleSubmit(onSubmit);
 
@@ -138,9 +111,8 @@ export default function NewArticlePage() {
             <FormField
               control={control}
               name="title"
-              label="Title"
               render={({ field }) => (
-                <Input 
+                <Input
                   placeholder="Enter article title"
                   {...field}
                   onChange={(e) => {
@@ -154,13 +126,12 @@ export default function NewArticlePage() {
             <FormField
               control={control}
               name="slug"
-              label="Slug"
               render={({ field }) => (
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground">
                     /blog/
                   </div>
-                  <Input 
+                  <Input
                     className="pl-16"
                     placeholder="article-slug"
                     {...field}
@@ -173,7 +144,6 @@ export default function NewArticlePage() {
           <FormField
             control={control}
             name="excerpt"
-            label="Excerpt"
             render={({ field }) => (
               <Textarea
                 placeholder="A brief summary of your article"
@@ -187,7 +157,6 @@ export default function NewArticlePage() {
           <FormField
             control={control}
             name="content"
-            label="Content"
             render={({ field }) => (
               <Textarea
                 placeholder="Write your article content here..."
@@ -203,9 +172,8 @@ export default function NewArticlePage() {
               <FormField
                 control={control}
                 name="tags"
-                label=""
                 render={({ field }) => (
-                  <Input 
+                  <Input
                     placeholder="tag1, tag2, tag3"
                     {...field}
                     value={field.value || ''}
@@ -222,7 +190,6 @@ export default function NewArticlePage() {
               <FormField
                 control={control}
                 name="published"
-                label=""
                 render={({ field }) => (
                   <div className="flex items-center space-x-2">
                     <Checkbox
